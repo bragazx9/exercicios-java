@@ -1,3 +1,5 @@
+package parte1;
+
 import java.util.Scanner;
 
 public class EX3 {

@@ -1,4 +1,5 @@
-import java.util.Locale;
+package parte1;
+
 import java.util.Scanner;
 
 public class EX8 {
