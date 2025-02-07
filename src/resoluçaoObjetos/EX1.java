@@ -1,4 +1,4 @@
-package parte4;
+package resoluçaoObjetos;
 
 import java.util.Scanner;
 
@@ -17,18 +17,18 @@ public class EX1 {
 
         textofinal(somaDosNumeros(num1,num2));
     }
-        public static String somaDosNumeros(int num1, int num2){
-            String t;
-            if (num1 + num2 >= 100)
-            {
-                t = "A soma dos dois numeros digitados é maior que 100";
-            }
-            else
-            {
-                t = "A soma dos dois numeros não é maior que 100";
-            }
-            return t;
+    public static String somaDosNumeros(int num1, int num2){
+        String t;
+        if (num1 + num2 >= 100)
+        {
+            t = "A soma dos dois numeros digitados é maior que 100";
         }
+        else
+        {
+            t = "A soma dos dois numeros não é maior que 100";
+        }
+        return t;
+    }
 
     public static void textofinal(String t2) {
         System.out.println(t2);

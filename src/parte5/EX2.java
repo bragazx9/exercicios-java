@@ -8,14 +8,14 @@ public class EX2 {
 
 
         System.out.print("Informe sua faixa de classificação (1 a 30): ");
-        int class = sc.nextInt();
+        int clas = sc.nextInt();
 
 
-        if (class >= 1 && class <= 10) {
+        if (clas >= 1 && clas <= 10) {
             System.out.println("Sua faixa de classificação é: A");
-        } else if (class > 10 && class <= 20) {
+        } else if (clas > 10 && clas <= 20) {
             System.out.println("Sua faixa de classificação é: B");
-        } else if (class > 20 && class <= 30) {
+        } else if (clas > 20 && clas <= 30) {
             System.out.println("Sua faixa de classificação é: C");
         } else {
             System.out.println("Número digitado inválido.");
