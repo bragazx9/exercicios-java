@@ -10,9 +10,9 @@ public class Objeto {
         return Math.sqrt(p * (p - a) * (p - b) * (p - c));
     }
 
-    public String total(Objeto qualquer,Objeto qualqueroutro) {
+    public String total(Objeto x,Objeto y) {
         String result;
-        if (qualquer.area() > qualqueroutro.area()) {
+        if (x.area() > y.area()) {
             result = "Larger area: X";
         } else {
             result = "Larger area: Y";
