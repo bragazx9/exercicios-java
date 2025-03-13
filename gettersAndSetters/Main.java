@@ -11,14 +11,14 @@ public class Main {
 
         ContaBancaria conta = new ContaBancaria("FpBala", 10.000);
         System.out.println("Titular: " + conta.getTitular());
-        System.out.println("Saldo inicial: R$" + conta.getSaldo());
+        System.out.println("Saldo inicial: " + conta.getSaldo());
         conta.depositar(500);
         conta.sacar(300);
-        System.out.println("Saldo atual: R$" + conta.getSaldo());
+        System.out.println("Saldo atual: " + conta.getSaldo());
 
         Produto produto = new Produto("COmputador", 1500, 10);
         System.out.println("Produto: " + produto.getNome());
-        System.out.println("Preço: R$" + produto.getPreco());
+        System.out.println("Preço: " + produto.getPreco());
         System.out.println("Estoque: " + produto.getEstoque() + " unidade");
         produto.adicionarEstoque(6);
         produto.removerEstoque(10);
