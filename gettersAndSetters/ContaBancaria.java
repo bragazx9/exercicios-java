@@ -20,16 +20,16 @@ class ContaBancaria {
     public void depositar(double valor) {
         if (valor > 0) {
             this.saldo += valor;
-            System.out.println("Depósito de R$" + valor + " realizado com sucesso.");
+            System.out.println("O deposito de " + valor + " foi feito.");
         } else {
-            System.out.println("Valor de depósito inválido.");
+            System.out.println("Valor de deposito invalido.");
         }
     }
 
     public void sacar(double valor) {
         if (valor > 0 && this.saldo >= valor) {
             this.saldo -= valor;
-            System.out.println("Saque de R$" + valor + " realizado com sucesso.");
+            System.out.println("Saque de " + valor + " foi feito.");
         } else {
             System.out.println("Saldo insuficiente ou valor inválido.");
         }
