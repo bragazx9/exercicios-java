@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Banco de Imagens</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 0; }
+        .container { max-width: 800px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px #ccc; }
+        h1 { text-align: center; }
+        form { display: flex; gap: 10px; margin-bottom: 30px; }
+        input[type="text"] { flex: 1; padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
+        button { padding: 8px 16px; border: none; border-radius: 4px; background: #007bff; color: #fff; cursor: pointer; }
+        button:hover { background: #0056b3; }
+        .galeria { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .imagem-card { background: #fafafa; border: 1px solid #eee; border-radius: 6px; padding: 10px; text-align: center; position: relative; }
+        .imagem-card img { max-width: 100%; max-height: 180px; border-radius: 4px; }
+        .imagem-card .autor { margin: 10px 0 5px; font-weight: bold; }
+        .imagem-card .actions { display: flex; justify-content: center; gap: 8px; }
+        .imagem-card .actions button { background: #dc3545; }
+        .imagem-card .actions button.edit { background: #ffc107; color: #333; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Banco de Imagens</h1>
+    <form id="formImagem">
+        <input type="text" id="nome" placeholder="Nome do autor" required>
+        <input type="text" id="url" placeholder="URL da imagem" required>
+        <button type="submit">Adicionar</button>
+    </form>
+    <div class="galeria" id="galeria"></div>
+</div>
+<script>
+const apiUrl = '/api/imagens';
+const galeria = document.getElementById('galeria');
+const form = document.getElementById('formImagem');
+const nomeInput = document.getElementById('nome');
+const urlInput = document.getElementById('url');
+let editId = null;
+
+function carregarImagens() {
+    fetch(apiUrl)
+        .then(res => res.json())
+        .then(imagens => {
+            galeria.innerHTML = '';
+            imagens.forEach(img => {
+                const card = document.createElement('div');
+                card.className = 'imagem-card';
+
+                const nomeEsc = img.nome.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+                const urlEsc = img.url.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+
+                card.innerHTML = `
+                    <img src="${img.url}" alt="Imagem" style="max-width:100%;max-height:180px;border-radius:4px;display:block;margin:0 auto 10px auto;" onerror="this.onerror=null;this.src='https://via.placeholder.com/220x180?text=Imagem+Indispon%C3%ADvel';">
+                    <div class="autor">${img.nome}</div>
+                    <div class="actions">
+                        <button onclick="removerImagem(${img.id})">Remover</button>
+                        <button class="edit" onclick="editarImagem(${img.id}, '${nomeEsc}', '${urlEsc}')">Editar</button>
+                    </div>
+                `;
+                galeria.appendChild(card);
+            });
+        });
+}
+
+form.onsubmit = function(e) {
+    e.preventDefault();
+    const nome = nomeInput.value.trim();
+    const url = urlInput.value.trim();
+    if (!nome || !url) return;
+    const imagem = { nome, url };
+    const btn = form.querySelector('button[type="submit"]');
+    btn.disabled = true;
+    btn.textContent = editId ? 'Salvando...' : 'Adicionando...';
+    let fetchUrl = apiUrl;
+    let fetchOptions = {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(imagem)
+    };
+    if (editId) {
+        fetchUrl = `${apiUrl}/${editId}`;
+        fetchOptions.method = 'PUT';
+    }
+    fetch(fetchUrl, fetchOptions)
+        .then(res => {
+            if (!res.ok) throw new Error('Erro ao salvar imagem');
+            return res.json ? res.json() : null;
+        })
+        .then(() => {
+            editId = null;
+            btn.textContent = 'Adicionar';
+            btn.disabled = false;
+            form.reset();
+            carregarImagens();
+        })
+        .catch(err => {
+            alert('Erro ao salvar imagem: ' + err.message);
+            btn.textContent = 'Adicionar';
+            btn.disabled = false;
+        });
+};
+
+window.removerImagem = function(id) {
+    if (confirm('Tem certeza que deseja remover esta imagem?')) {
+        fetch(`${apiUrl}/${id}`, { method: 'DELETE' })
+            .then(() => carregarImagens());
+    }
+};
+
+window.editarImagem = function(id, nome, url) {
+    nomeInput.value = nome;
+    urlInput.value = url;
+    editId = id;
+    form.querySelector('button[type="submit"]').textContent = 'Salvar';
+};
+
+carregarImagens();
+</script>
+</body>
+</html>
