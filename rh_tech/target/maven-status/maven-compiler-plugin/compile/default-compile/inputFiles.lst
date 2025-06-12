@@ -1,0 +1,10 @@
+D:\rh_tech\src\main\java\rh_tech\config\CorsConfig.java
+D:\rh_tech\src\main\java\rh_tech\controller\CargoController.java
+D:\rh_tech\src\main\java\rh_tech\controller\FuncionarioController.java
+D:\rh_tech\src\main\java\rh_tech\model\Cargo.java
+D:\rh_tech\src\main\java\rh_tech\model\Funcionario.java
+D:\rh_tech\src\main\java\rh_tech\repository\CargoRepository.java
+D:\rh_tech\src\main\java\rh_tech\repository\FuncionarioRepository.java
+D:\rh_tech\src\main\java\rh_tech\RhTechApplication.java
+D:\rh_tech\src\main\java\rh_tech\service\CargoService.java
+D:\rh_tech\src\main\java\rh_tech\service\FuncionarioService.java

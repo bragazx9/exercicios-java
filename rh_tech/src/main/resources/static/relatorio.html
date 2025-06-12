@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório de Vínculos - RH Tech</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #f5f5f5; }
+        .container { max-width: 900px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px #ccc; }
+        .top-bar { text-align: center; margin-bottom: 20px; }
+        .btn-voltar {
+            display: inline-block;
+            background: #888;
+            color: #fff;
+            border: none;
+            border-radius: 6px;
+            padding: 10px 28px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 10px;
+            transition: background 0.2s;
+            text-decoration: none;
+        }
+        .btn-voltar:hover { background: #555; }
+        h2 { text-align: center; }
+        label { margin-right: 10px; }
+        select { padding: 6px; }
+        button { padding: 8px 18px; margin-left: 10px; background: #1976d2; color: #fff; border: none; border-radius: 4px; font-size: 15px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background: #f0f0f0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-bar">
+            <a href="home.html" class="btn-voltar">&#8592; Voltar</a>
+        </div>
+        <h2>Relatório de Vínculos Funcionário x Cargo</h2>
+        <div>
+            <label for="filtroFuncionario">Funcionário:</label>
+            <select id="filtroFuncionario">
+                <option value="">Todos</option>
+            </select>
+            <label for="filtroCargo">Cargo:</label>
+            <select id="filtroCargo">
+                <option value="">Todos</option>
+            </select>
+            <button onclick="buscar()">Buscar</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Funcionário</th>
+                    <th>Cargo</th>
+                    <th>Data Início</th>
+                    <th>Data Fim</th>
+                    <th>Detalhes</th>
+                </tr>
+            </thead>
+            <tbody id="relatorio-tbody"></tbody>
+        </table>
+    </div>
+    <script>
+        function carregarFuncionarios() {
+            fetch('/funcionarios')
+                .then(r => r.json())
+                .then(data => {
+                    const select = document.getElementById('filtroFuncionario');
+                    data.forEach(f => {
+                        select.innerHTML += `<option value="${f.id}">${f.nome}</option>`;
+                    });
+                });
+        }
+        function carregarCargos() {
+            fetch('/cargos')
+                .then(r => r.json())
+                .then(data => {
+                    const select = document.getElementById('filtroCargo');
+                    data.forEach(c => {
+                        select.innerHTML += `<option value="${c.id}">${c.nome}</option>`;
+                    });
+                });
+        }
+        function buscar() {
+            const funcionarioId = document.getElementById('filtroFuncionario').value;
+            const cargoId = document.getElementById('filtroCargo').value;
+            let url = '/funcionarios-por-cargo';
+            if (funcionarioId) url += '?funcionarioId=' + funcionarioId;
+            else if (cargoId) url += '?cargoId=' + cargoId;
+            fetch(url)
+                .then(r => r.json())
+                .then(data => {
+                    const tbody = document.getElementById('relatorio-tbody');
+                    tbody.innerHTML = '';
+                    data.forEach(v => {
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>${v.funcionario.nome}</td>
+                                <td>${v.cargo.nome}</td>
+                                <td>${v.dataInicio || ''}</td>
+                                <td>${v.dataFim || ''}</td>
+                                <td>${v.detalhes || ''}</td>
+                            </tr>
+                        `;
+                    });
+                });
+        }
+        carregarFuncionarios();
+        carregarCargos();
+        buscar();
+    </script>
+</body>
+</html>
